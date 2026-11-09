@@ -1,16 +1,22 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { Volume2, VolumeX, Disc3 } from 'lucide-react';
+import { Volume2, VolumeX, Disc3, SkipForward } from 'lucide-react';
 import { sounds } from '../utils/soundEffects';
 
 interface AudioPlayerProps {
   theme?: string;
 }
 
+const TRACKS = [
+  { id: 1, title: 'Dilruba Dilnasheen', label: '1. Dilruba Dilnasheen (0-22s)', start: 0 },
+  { id: 2, title: 'Maula Mere Maula', label: '2. Maula Mere Maula', start: 22 },
+];
+
 export const AudioPlayer: React.FC<AudioPlayerProps> = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isMuted, setIsMuted] = useState<boolean>(false);
   const [hasInteracted, setHasInteracted] = useState<boolean>(false);
+  const [activeTrackIndex, setActiveTrackIndex] = useState<number>(0);
 
   useEffect(() => {
     let audio: HTMLAudioElement;
@@ -36,8 +42,17 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = () => {
       setIsPlaying(false);
     };
 
+    const handleTimeUpdate = () => {
+      if (audio.currentTime < 22) {
+        setActiveTrackIndex(0);
+      } else {
+        setActiveTrackIndex(1);
+      }
+    };
+
     audio.addEventListener('ended', handleEnded);
     audio.addEventListener('error', handleError);
+    audio.addEventListener('timeupdate', handleTimeUpdate);
 
     // Attempt autoplay if permitted
     audio
@@ -69,6 +84,7 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = () => {
     return () => {
       audio.removeEventListener('ended', handleEnded);
       audio.removeEventListener('error', handleError);
+      audio.removeEventListener('timeupdate', handleTimeUpdate);
       window.removeEventListener('click', handleFirstGesture);
       window.removeEventListener('touchstart', handleFirstGesture);
       audio.pause();
@@ -104,13 +120,31 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = () => {
     setIsMuted(newMuteState);
   }, [isMuted]);
 
+  const switchTrack = useCallback((index: number, e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    sounds.playPop();
+    if (!audioRef.current) return;
+    audioRef.current.currentTime = TRACKS[index].start;
+    setActiveTrackIndex(index);
+    if (audioRef.current.paused) {
+      audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
+    }
+  }, []);
+
+  const toggleNextTrack = useCallback((e?: React.MouseEvent) => {
+    const nextIdx = activeTrackIndex === 0 ? 1 : 0;
+    switchTrack(nextIdx, e);
+  }, [activeTrackIndex, switchTrack]);
+
+  const activeTrack = TRACKS[activeTrackIndex];
+
   return (
-    <div className="flex items-center gap-1.5 sm:gap-2 rounded-full border border-[var(--theme-accent,#ff9ebb)]/30 bg-[#0e060d]/85 px-2.5 sm:px-3 py-1 sm:py-1.5 backdrop-blur-md shadow-lg transition-all hover:border-[var(--theme-accent,#ff9ebb)]/60 group">
+    <div className="flex items-center gap-1 sm:gap-2 rounded-full border border-[var(--theme-accent,#ff9ebb)]/30 bg-[#0e060d]/85 px-2.5 sm:px-3 py-1 sm:py-1.5 backdrop-blur-md shadow-lg transition-all hover:border-[var(--theme-accent,#ff9ebb)]/60 group">
       {/* Spinning Cute Vinyl Record */}
       <button
         onClick={togglePlay}
         className="flex items-center gap-1.5 sm:gap-2.5 text-xs font-serif tracking-widest text-[var(--theme-accent,#ff9ebb)] hover:brightness-125 transition-all focus:outline-none active:scale-95"
-        title={isPlaying ? 'Pause soundtrack' : 'Play soundtrack'}
+        title={isPlaying ? `Pause soundtrack (${activeTrack.title})` : 'Play soundtrack'}
         aria-label="Soundtrack toggle"
       >
         <div className="relative flex items-center justify-center">
@@ -142,9 +176,19 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = () => {
           />
         </div>
 
-        <span className="hidden md:inline text-[11px] uppercase font-serif tracking-widest opacity-90">
-          {isPlaying ? 'Maula Mere Maula 🎵' : 'Music Off'}
+        <span className="hidden sm:inline text-[11px] uppercase font-serif tracking-widest opacity-90 max-w-[170px] truncate">
+          {isPlaying ? `${activeTrack.label} 🎵` : 'Music Off'}
         </span>
+      </button>
+
+      {/* Track switch button: Dilruba ↔ Maula */}
+      <button
+        onClick={toggleNextTrack}
+        className="p-1 rounded-full text-[var(--theme-accent,#ff9ebb)]/80 hover:text-[var(--theme-accent,#ff9ebb)] hover:bg-white/10 transition-colors focus:outline-none active:scale-90"
+        title={activeTrackIndex === 0 ? 'Switch to Track 2: Maula Mere Maula' : 'Switch to Track 1: Dilruba Dilnasheen'}
+        aria-label="Next track"
+      >
+        <SkipForward className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
       </button>
 
       {/* Mute button */}
