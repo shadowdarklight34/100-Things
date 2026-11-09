@@ -135,9 +135,12 @@ export const LuckyStarsJarModal: React.FC<LuckyStarsJarModalProps> = ({
             isAnimating ? 'scale-105 shadow-[0_0_50px_rgba(255,158,187,0.5)]' : ''
           }`}
         >
-          {/* Jar Lid */}
+          {/* Jar Lid & Cute Pink Ribbon Bow */}
           <div className="absolute -top-1 left-1/2 -translate-x-1/2 w-36 sm:w-40 h-4 rounded-t-lg bg-gradient-to-r from-[#e8799a] via-[#ff9ebb] to-[#ffccd8] border border-[#ff9ebb] shadow-md" />
-          <div className="absolute top-3 left-1/2 -translate-x-1/2 w-44 sm:w-48 h-1.5 bg-[#ff9ebb]/30 rounded-full" />
+          <div className="absolute top-1 left-1/2 -translate-x-1/2 z-10 text-base filter drop-shadow-[0_0_6px_rgba(255,158,187,0.7)]">
+            🎀
+          </div>
+          <div className="absolute top-3.5 left-1/2 -translate-x-1/2 w-44 sm:w-48 h-1.5 bg-[#ff9ebb]/30 rounded-full" />
 
           {/* Glowing Folded Lucky Stars Inside */}
           {Array.from({ length: 48 }).map((_, i) => {

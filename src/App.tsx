@@ -370,6 +370,12 @@ export const App: React.FC = () => {
         >
           <ChevronRight className="h-6 w-6 sm:h-9 sm:w-9 drop-shadow-[0_0_10px_var(--theme-accent-glow,rgba(255,158,187,0.5))]" />
         </button>
+
+        {/* Cute Subtle Mobile Hint */}
+        <div className="sm:hidden absolute bottom-1.5 left-1/2 -translate-x-1/2 pointer-events-none text-[10px] font-serif tracking-widest text-[var(--theme-accent,#ff9ebb)]/65 flex items-center gap-1.5 whitespace-nowrap animate-pulse">
+          <span>💫</span>
+          <span>Swipe to read • Double-tap for hearts 💕</span>
+        </div>
       </main>
 
       {/* Bottom Progress Section (Matching Video Design + Mobile Friendly) */}

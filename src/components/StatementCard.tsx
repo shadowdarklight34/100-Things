@@ -20,7 +20,9 @@ export const StatementCard: React.FC<StatementCardProps> = ({
   onRandomQuote,
   onOpenLoveLetter,
 }) => {
-  const [floatingHearts, setFloatingHearts] = useState<{ id: number; x: number; y: number }[]>([]);
+  const [floatingHearts, setFloatingHearts] = useState<
+    { id: number; x: number; y: number; emoji: string }[]
+  >([]);
   const lastTapRef = useRef<number>(0);
 
   const parts = parseStatement(statement.raw);
@@ -47,15 +49,22 @@ export const StatementCard: React.FC<StatementCardProps> = ({
 
   const triggerHeartAnimation = (x: number, y: number) => {
     sounds.playPop();
-    const id = Date.now();
-    setFloatingHearts((prev) => [...prev, { id, x, y }]);
+    const emojis = ['💖', '✨', '🌸'];
+    const newBurst = emojis.map((emoji, i) => ({
+      id: Date.now() + i,
+      x: x + (i - 1) * 22,
+      y: y + (Math.random() - 0.5) * 15,
+      emoji,
+    }));
+
+    setFloatingHearts((prev) => [...prev, ...newBurst]);
     setTimeout(() => {
-      setFloatingHearts((prev) => prev.filter((h) => h.id !== id));
-    }, 1200);
+      setFloatingHearts((prev) => prev.filter((h) => !newBurst.some((nb) => nb.id === h.id)));
+    }, 1300);
 
     confetti({
-      particleCount: 18,
-      spread: 45,
+      particleCount: 22,
+      spread: 55,
       origin: {
         x: (x + window.innerWidth * 0.1) / window.innerWidth,
         y: y / window.innerHeight,
@@ -91,20 +100,29 @@ export const StatementCard: React.FC<StatementCardProps> = ({
         }
       `}</style>
 
-      {/* Floating hearts on double tap */}
+      {/* Floating emojis on double tap */}
       {floatingHearts.map((h) => (
         <div
           key={h.id}
-          className="pointer-events-none absolute z-40 text-[#ff9ebb]"
+          className="pointer-events-none absolute z-40 text-2xl select-none"
           style={{
             left: `${h.x}px`,
             top: `${h.y}px`,
             animation: 'floatUpFade 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards',
           }}
         >
-          <Heart className="h-10 w-10 fill-[#ff9ebb] drop-shadow-[0_0_15px_rgba(255,158,187,0.8)]" />
+          {h.emoji}
         </div>
       ))}
+
+      {/* Cute Sweet Reason Tag */}
+      <div className="flex items-center gap-1.5 mb-2 px-3 py-0.5 rounded-full bg-[var(--theme-accent,#ff9ebb)]/10 border border-[var(--theme-accent,#ff9ebb)]/25 backdrop-blur-sm shadow-sm animate-fade-in">
+        <span className="text-xs">🌸</span>
+        <span className="font-serif text-[11px] uppercase tracking-widest text-[var(--theme-accent,#ff9ebb)] font-medium">
+          A Reason To Smile
+        </span>
+        <span className="text-xs">✨</span>
+      </div>
 
       {/* Top Ornamental Divider with Number Badge */}
       <div className="flex items-center justify-center w-full max-w-xs sm:max-w-md gap-3 sm:gap-6 mb-4 sm:mb-8">

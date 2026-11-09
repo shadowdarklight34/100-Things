@@ -102,20 +102,28 @@ export const PersonalizeModal: React.FC<PersonalizeModalProps> = ({
 
             {/* Quick preset tags */}
             <div className="flex flex-wrap items-center gap-2 mt-3">
-              {['YOU', 'CRUSH', 'SPECIAL ONE', 'BESTIE', 'SOPHIA', 'ANGEL'].map((preset) => {
-                const isActive = nameInput.trim().toUpperCase() === preset;
+              {[
+                { label: 'YOU', emoji: '🌸' },
+                { label: 'CRUSH', emoji: '💌' },
+                { label: 'SPECIAL ONE', emoji: '✨' },
+                { label: 'BESTIE', emoji: '🧸' },
+                { label: 'SOPHIA', emoji: '🎀' },
+                { label: 'ANGEL', emoji: '👼' },
+              ].map((item) => {
+                const isActive = nameInput.trim().toUpperCase() === item.label;
                 return (
                   <button
-                    key={preset}
+                    key={item.label}
                     type="button"
-                    onClick={() => setNameInput(preset)}
-                    className={`px-3 py-1 rounded-full text-xs font-serif tracking-wider border transition-all ${
+                    onClick={() => setNameInput(item.label)}
+                    className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-serif tracking-wider border transition-all active:scale-95 ${
                       isActive
-                        ? 'bg-[#ff9ebb]/20 border-[#ff9ebb] text-[#ff9ebb] ring-1 ring-[#ff9ebb]/60 shadow-sm'
+                        ? 'bg-[#ff9ebb]/25 border-[#ff9ebb] text-[#ff9ebb] ring-1 ring-[#ff9ebb]/60 shadow-[0_0_10px_rgba(255,158,187,0.3)] scale-105'
                         : 'border-[#ff9ebb]/20 text-neutral-400 hover:text-[#ff9ebb] hover:border-[#ff9ebb]/50'
                     }`}
                   >
-                    {preset}
+                    <span>{item.emoji}</span>
+                    <span>{item.label}</span>
                   </button>
                 );
               })}

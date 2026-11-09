@@ -34,6 +34,22 @@ interface StarRainDrop {
   color: string;
 }
 
+interface SakuraPetal {
+  x: number;
+  y: number;
+  size: number;
+  speedY: number;
+  speedX: number;
+  angle: number;
+  angleSpeed: number;
+  flip: number;
+  flipSpeed: number;
+  wobble: number;
+  wobbleSpeed: number;
+  alpha: number;
+  color: string;
+}
+
 interface StarfieldCanvasProps {
   theme?: ThemeType;
   triggerShower?: number;
@@ -143,6 +159,36 @@ export const StarfieldCanvas: React.FC<StarfieldCanvasProps> = ({
       });
     }
 
+    // 3. Floating Cute Sakura Petals / Dreamy Embers
+    const petals: SakuraPetal[] = [];
+    const petalCount = Math.min(Math.floor(width / 40), 28);
+    const petalColors =
+      theme === 'sakura'
+        ? ['#ffb6c1', '#ffaec9', '#ffd1dc', '#ff9ebb', '#fed7e2']
+        : theme === 'lavender'
+        ? ['#e9d5ff', '#d8b4fe', '#f3e8ff', '#c084fc']
+        : theme === 'aurora'
+        ? ['#a7f3d0', '#6ee7b7', '#99f6e4', '#ccfbf1']
+        : ['#fef08a', '#fde047', '#fde68a', '#fed7aa'];
+
+    for (let i = 0; i < petalCount; i++) {
+      petals.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        size: Math.random() * 8 + 6,
+        speedY: Math.random() * 1.2 + 0.6,
+        speedX: Math.random() * 0.8 + 0.3,
+        angle: Math.random() * Math.PI * 2,
+        angleSpeed: (Math.random() - 0.5) * 0.02,
+        flip: Math.random() * Math.PI,
+        flipSpeed: Math.random() * 0.03 + 0.015,
+        wobble: Math.random() * Math.PI * 2,
+        wobbleSpeed: Math.random() * 0.04 + 0.02,
+        alpha: Math.random() * 0.45 + 0.35,
+        color: petalColors[Math.floor(Math.random() * petalColors.length)],
+      });
+    }
+
     const handleResize = () => {
       if (!canvas) return;
       width = canvas.width = window.innerWidth;
@@ -203,6 +249,41 @@ export const StarfieldCanvas: React.FC<StarfieldCanvasProps> = ({
         ctx.arc(drop.x, drop.y, 0.8, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(255, 255, 255, ${drop.alpha + 0.2})`;
         ctx.fill();
+      }
+
+      // Render Floating Cute Sakura Petals
+      for (let i = 0; i < petals.length; i++) {
+        const p = petals[i];
+        p.wobble += p.wobbleSpeed;
+        p.flip += p.flipSpeed;
+        p.angle += p.angleSpeed;
+        p.y += p.speedY;
+        p.x += p.speedX + Math.sin(p.wobble) * 0.7;
+
+        if (p.y > height + 25) {
+          p.y = -20;
+          p.x = Math.random() * width;
+        }
+        if (p.x > width + 25) {
+          p.x = -20;
+        }
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.angle);
+        ctx.scale(1, Math.cos(p.flip)); // 3D tumble flip
+
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.bezierCurveTo(p.size * 0.5, -p.size * 0.8, p.size * 1.2, -p.size * 0.4, p.size * 0.8, p.size * 0.6);
+        ctx.bezierCurveTo(p.size * 0.4, p.size * 0.95, 0, p.size * 0.5, 0, 0);
+
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = p.alpha;
+        ctx.shadowColor = p.color;
+        ctx.shadowBlur = 6;
+        ctx.fill();
+        ctx.restore();
       }
 
       // Automatically spawn graceful shooting stars regularly
