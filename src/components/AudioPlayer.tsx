@@ -13,7 +13,7 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = () => {
   const [hasInteracted, setHasInteracted] = useState<boolean>(false);
 
   useEffect(() => {
-    const audio = new Audio('./music.mp3');
+    const audio = new Audio('./music.m4a');
     audio.loop = true;
     audio.preload = 'auto';
     audio.volume = 0.65;
@@ -129,7 +129,7 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = () => {
         </div>
 
         <span className="hidden md:inline text-[11px] uppercase font-serif tracking-widest opacity-90">
-          {isPlaying ? 'Treat You Better 🎵' : 'Music Off'}
+          {isPlaying ? 'Maula Mere Maula 🎵' : 'Music Off'}
         </span>
       </button>
 
