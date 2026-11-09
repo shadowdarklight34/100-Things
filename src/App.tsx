@@ -227,43 +227,38 @@ export const App: React.FC = () => {
       {/* Top Header - Mobile & Desktop */}
       <header className="relative z-30 flex flex-col sm:flex-row items-center justify-between px-3 sm:px-8 pt-2.5 sm:pt-5 pb-1 gap-2">
         {/* Top Controls Row on Mobile */}
-        <div className="w-full flex items-center justify-between sm:w-auto gap-2">
-          {/* Audio Player */}
+        <div className="w-full sm:w-auto flex items-center justify-between gap-1.5 sm:gap-3">
+          {/* Audio Player - fully visible & prominent on mobile */}
           <AudioPlayer theme={theme} />
 
-          {/* Theme Switcher */}
-          <ThemeSwitcher currentTheme={theme} onThemeChange={setTheme} />
+          {/* Right Controls */}
+          <div className="flex items-center gap-1 sm:gap-2 shrink-0">
+            {/* Theme Switcher */}
+            <ThemeSwitcher currentTheme={theme} onThemeChange={setTheme} />
 
-          {/* Mobile Right Tools */}
-          <div className="flex sm:hidden items-center gap-1.5">
-            <button
-              onClick={() => {
-                sounds.playPop();
-                setIsJarOpen(true);
-              }}
-              className="flex items-center gap-1 px-2 py-1 rounded-full border border-[var(--theme-accent,#ff9ebb)]/40 bg-[var(--theme-accent,#ff9ebb)]/20 text-[var(--theme-accent,#ff9ebb)] active:scale-90 shadow-sm"
-              title="Lucky Stars Jar 🌟"
-              aria-label="Lucky Stars Jar"
-            >
-              <span className="text-xs">⭐</span>
-              <span className="font-serif text-[11px] font-medium tracking-wide">Jar</span>
-            </button>
-            <button
-              onClick={() => setIsAllModalOpen(true)}
-              className="p-1.5 rounded-full border border-white/10 bg-[#0e060d]/80 text-[var(--theme-accent,#ff9ebb)] active:scale-95"
-              title="Browse 100"
-              aria-label="Browse all"
-            >
-              <Grid className="h-4 w-4" />
-            </button>
-            <button
-              onClick={() => setIsShareOpen(true)}
-              className="p-1.5 rounded-full border border-white/10 bg-[#0e060d]/80 text-[var(--theme-accent,#ff9ebb)] active:scale-95"
-              title="Share"
-              aria-label="Share quote"
-            >
-              <Share2 className="h-4 w-4" />
-            </button>
+            {/* Mobile Right Tools */}
+            <div className="flex sm:hidden items-center gap-1">
+              <button
+                onClick={() => {
+                  sounds.playPop();
+                  setIsJarOpen(true);
+                }}
+                className="flex items-center gap-1 px-2 py-1 rounded-full border border-[var(--theme-accent,#ff9ebb)]/40 bg-[var(--theme-accent,#ff9ebb)]/20 text-[var(--theme-accent,#ff9ebb)] active:scale-90 shadow-sm"
+                title="Lucky Stars Jar 🌟"
+                aria-label="Lucky Stars Jar"
+              >
+                <span className="text-xs">⭐</span>
+                <span className="font-serif text-[11px] font-medium tracking-wide">Jar</span>
+              </button>
+              <button
+                onClick={() => setIsAllModalOpen(true)}
+                className="p-1.5 rounded-full border border-white/10 bg-[#0e060d]/80 text-[var(--theme-accent,#ff9ebb)] active:scale-95"
+                title="Browse 100"
+                aria-label="Browse all"
+              >
+                <Grid className="h-3.5 w-3.5" />
+              </button>
+            </div>
           </div>
         </div>
 

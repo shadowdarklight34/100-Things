@@ -99,35 +99,6 @@ export const PersonalizeModal: React.FC<PersonalizeModalProps> = ({
               className="w-full bg-[#160a12] border border-[#ff9ebb]/35 focus:border-[#ff9ebb] rounded-2xl px-4 py-3 text-base text-[#f1ede2] placeholder-neutral-500 focus:outline-none transition-all shadow-inner"
               autoFocus
             />
-
-            {/* Quick preset tags */}
-            <div className="flex flex-wrap items-center gap-2 mt-3">
-              {[
-                { label: 'HIGHNESS', emoji: '👑' },
-                { label: 'YOU', emoji: '🌸' },
-                { label: 'CRUSH', emoji: '💌' },
-                { label: 'SPECIAL ONE', emoji: '✨' },
-                { label: 'BESTIE', emoji: '🧸' },
-                { label: 'ANGEL', emoji: '👼' },
-              ].map((item) => {
-                const isActive = nameInput.trim().toUpperCase() === item.label;
-                return (
-                  <button
-                    key={item.label}
-                    type="button"
-                    onClick={() => setNameInput(item.label)}
-                    className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-serif tracking-wider border transition-all active:scale-95 ${
-                      isActive
-                        ? 'bg-[#ff9ebb]/25 border-[#ff9ebb] text-[#ff9ebb] ring-1 ring-[#ff9ebb]/60 shadow-[0_0_10px_rgba(255,158,187,0.3)] scale-105'
-                        : 'border-[#ff9ebb]/20 text-neutral-400 hover:text-[#ff9ebb] hover:border-[#ff9ebb]/50'
-                    }`}
-                  >
-                    <span>{item.emoji}</span>
-                    <span>{item.label}</span>
-                  </button>
-                );
-              })}
-            </div>
           </div>
 
           {/* Action buttons */}

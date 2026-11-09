@@ -25,12 +25,13 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = () => {
     let audio: HTMLAudioElement;
     try {
       const baseUrl = import.meta.env?.BASE_URL || './';
-      // Use explicit version query parameter to prevent browser caching of old trimmed clips
-      const audioUrl = `${baseUrl.endsWith('/') ? baseUrl : baseUrl + '/'}dilruba_full.m4a?v=full_22s_to_end`;
+      // Load soft volume audio with cache-busting query parameter
+      const audioUrl = `${baseUrl.endsWith('/') ? baseUrl : baseUrl + '/'}dilruba_full.m4a?v=soft_v3`;
       audio = new Audio(audioUrl);
       audio.loop = true;
       audio.preload = 'auto';
-      audio.volume = 0.65;
+      // Lower volume for gentle background listening
+      audio.volume = 0.35;
       audioRef.current = audio;
     } catch {
       return;
@@ -132,26 +133,26 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = () => {
   }, [isMuted]);
 
   return (
-    <div className="flex items-center gap-1.5 sm:gap-2 rounded-full border border-[var(--theme-accent,#ff9ebb)]/30 bg-[#0e060d]/85 px-2.5 sm:px-3 py-1 sm:py-1.5 backdrop-blur-md shadow-lg transition-all hover:border-[var(--theme-accent,#ff9ebb)]/60 group">
-      {/* Spinning Cute Vinyl Record */}
+    <div className="flex items-center gap-1.5 sm:gap-2.5 rounded-full border border-[var(--theme-accent,#ff9ebb)]/45 bg-[#140812]/90 px-2.5 sm:px-3 py-1 sm:py-1.5 backdrop-blur-md shadow-[0_0_15px_rgba(255,158,187,0.2)] transition-all hover:border-[var(--theme-accent,#ff9ebb)]/70 shrink-0">
+      {/* Vinyl + Equalizer + Title/Timer */}
       <button
         onClick={togglePlay}
-        className="flex items-center gap-1.5 sm:gap-2.5 text-xs font-serif tracking-widest text-[var(--theme-accent,#ff9ebb)] hover:brightness-125 transition-all focus:outline-none active:scale-95"
+        className="flex items-center gap-1.5 sm:gap-2 text-xs font-serif tracking-widest text-[var(--theme-accent,#ff9ebb)] hover:brightness-125 transition-all focus:outline-none active:scale-95"
         title={isPlaying ? `Pause soundtrack (${formatTime(currentTime)} / ${formatTime(duration)})` : 'Play soundtrack'}
         aria-label="Soundtrack toggle"
       >
-        <div className="relative flex items-center justify-center">
+        {/* Spinning Cute Vinyl Record */}
+        <div className="relative flex items-center justify-center shrink-0">
           <Disc3
             className={`h-4 w-4 sm:h-5 sm:w-5 text-[var(--theme-accent,#ff9ebb)] transition-transform ${
               isPlaying ? 'animate-[spin_4s_linear_infinite]' : 'opacity-70'
             }`}
           />
-          {/* Center record spindle */}
           <span className="absolute h-1 w-1 sm:h-1.5 sm:w-1.5 rounded-full bg-[var(--theme-accent,#ff9ebb)]" />
         </div>
 
-        {/* Dancing cute sound equalizer */}
-        <div className="flex items-end gap-0.5 h-3 sm:h-3.5 w-3 sm:w-3.5">
+        {/* Dancing sound equalizer */}
+        <div className="flex items-end gap-0.5 h-3 sm:h-3.5 w-2.5 sm:w-3 shrink-0">
           <span
             className={`w-0.5 bg-[var(--theme-accent,#ff9ebb)] rounded-full transition-all duration-300 ${
               isPlaying ? 'animate-[bounce_0.8s_ease-in-out_infinite] h-3 sm:h-3.5' : 'h-1'
@@ -169,13 +170,14 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = () => {
           />
         </div>
 
-        <div className="flex items-center gap-1.5">
-          <span className="hidden sm:inline text-[11px] uppercase font-serif tracking-widest opacity-90">
-            {isPlaying ? 'Dilruba Dilnasheen 🎵' : 'Music Off'}
+        {/* Label & Timer: Visually crystal-clear on BOTH Mobile & Desktop */}
+        <div className="flex flex-col text-left">
+          <span className="text-[11px] sm:text-xs uppercase font-serif tracking-wider text-[var(--theme-accent,#ff9ebb)] font-medium leading-none whitespace-nowrap">
+            {isPlaying ? 'Dilruba 🎵' : 'Music Off'}
           </span>
           {isPlaying && (
-            <span className="text-[10px] tracking-wider opacity-60 font-mono">
-              {formatTime(currentTime)}/{formatTime(duration)}
+            <span className="text-[9px] sm:text-[10px] tracking-wider text-neutral-300 font-mono mt-0.5 leading-none">
+              {formatTime(currentTime)} / {formatTime(duration)}
             </span>
           )}
         </div>
@@ -184,7 +186,7 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = () => {
       {/* Mute button */}
       <button
         onClick={toggleMute}
-        className="p-1 rounded-full text-[var(--theme-accent,#ff9ebb)]/70 hover:text-[var(--theme-accent,#ff9ebb)] hover:bg-white/5 transition-colors focus:outline-none active:scale-90"
+        className="p-1 rounded-full text-[var(--theme-accent,#ff9ebb)]/80 hover:text-[var(--theme-accent,#ff9ebb)] hover:bg-white/10 transition-colors focus:outline-none active:scale-90 shrink-0"
         title={isMuted ? 'Unmute' : 'Mute'}
         aria-label="Mute toggle"
       >
