@@ -107,7 +107,6 @@ export const AllStatementsModal: React.FC<AllStatementsModalProps> = ({
                 <div
                   key={item.id}
                   onClick={() => {
-                    sounds.playChime();
                     onSelect(item.id - 1);
                     onClose();
                   }}

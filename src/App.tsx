@@ -79,12 +79,10 @@ export const App: React.FC = () => {
   }, []);
 
   const handleNext = useCallback(() => {
-    sounds.playChime();
     setCurrentIndex((prev) => (prev + 1) % STATEMENTS.length);
   }, []);
 
   const handlePrev = useCallback(() => {
-    sounds.playChime();
     setCurrentIndex((prev) => (prev - 1 + STATEMENTS.length) % STATEMENTS.length);
   }, []);
 
@@ -408,7 +406,6 @@ export const App: React.FC = () => {
                 Math.max(Math.floor(ratio * STATEMENTS.length), 0),
                 STATEMENTS.length - 1
               );
-              sounds.playChime();
               setCurrentIndex(target);
             }}
             className="group relative h-1 sm:h-1.5 w-full bg-[#160c14] rounded-full overflow-hidden cursor-pointer"
@@ -518,7 +515,6 @@ export const App: React.FC = () => {
         onClose={() => setIsAllModalOpen(false)}
         currentIndex={currentIndex}
         onSelect={(idx) => {
-          sounds.playChime();
           setCurrentIndex(idx);
         }}
         favorites={favorites}
@@ -551,7 +547,6 @@ export const App: React.FC = () => {
         isOpen={isJarOpen}
         onClose={() => setIsJarOpen(false)}
         onSelectStatement={(idx) => {
-          sounds.playChime();
           setCurrentIndex(idx);
         }}
         recipientName={recipientName}
