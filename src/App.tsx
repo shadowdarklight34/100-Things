@@ -205,7 +205,7 @@ export const App: React.FC = () => {
     <div
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
-      className={`theme-${theme} relative flex flex-col h-[100dvh] w-full overflow-hidden select-none text-[#f2eee3]`}
+      className={`theme-${theme} relative flex flex-col h-[100dvh] min-h-[100dvh] w-full overflow-hidden select-none text-[#f2eee3]`}
       style={{
         paddingTop: 'env(safe-area-inset-top, 0px)',
         paddingBottom: 'env(safe-area-inset-bottom, 0px)',
@@ -225,7 +225,7 @@ export const App: React.FC = () => {
       <AmbientQuotesBackground currentIndex={currentIndex} />
 
       {/* Top Header - Mobile & Desktop */}
-      <header className="relative z-30 flex flex-col sm:flex-row items-center justify-between px-3 sm:px-8 pt-2.5 sm:pt-5 pb-1 gap-2">
+      <header className="relative z-30 flex flex-col sm:flex-row items-center justify-between px-3 sm:px-8 pt-1.5 sm:pt-4 pb-1 gap-1.5 sm:gap-2 shrink-0">
         {/* Top Controls Row on Mobile */}
         <div className="w-full sm:w-auto flex items-center justify-between gap-1.5 sm:gap-3">
           {/* Audio Player - fully visible & prominent on mobile */}
@@ -269,23 +269,23 @@ export const App: React.FC = () => {
             className="group inline-flex items-center justify-center gap-1.5 sm:gap-2 cursor-pointer transition-transform duration-300 active:scale-95 hover:scale-105"
             title="Click to personalize recipient name"
           >
-            <h1 className="font-serif text-base sm:text-2xl md:text-3xl tracking-[0.2em] sm:tracking-[0.35em] uppercase glow-gold-title font-medium flex items-center gap-1.5">
+            <h1 className="font-serif text-sm sm:text-2xl md:text-3xl tracking-[0.18em] sm:tracking-[0.35em] uppercase glow-gold-title font-medium flex items-center gap-1.5">
               <span>100 THINGS ABOUT {recipientName}</span>
               <Edit3 className="h-3 w-3 sm:h-4 sm:w-4 opacity-70 group-hover:opacity-100 transition-opacity text-[var(--theme-accent,#ff9ebb)]" />
             </h1>
           </button>
 
           {/* Dedicated Mobile Jar Pill right under title */}
-          <div className="flex sm:hidden items-center justify-center gap-2 mt-1">
+          <div className="flex sm:hidden items-center justify-center gap-2 mt-0.5">
             <button
               onClick={() => {
                 sounds.playPop();
                 setIsJarOpen(true);
               }}
-              className="flex items-center gap-1.5 px-3 py-0.5 rounded-full border border-[var(--theme-accent,#ff9ebb)]/40 bg-[var(--theme-accent,#ff9ebb)]/15 hover:bg-[var(--theme-accent,#ff9ebb)]/25 text-[var(--theme-accent,#ff9ebb)] font-serif text-[11px] tracking-wider shadow-[0_0_12px_rgba(255,158,187,0.3)] active:scale-95"
+              className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border border-[var(--theme-accent,#ff9ebb)]/40 bg-[var(--theme-accent,#ff9ebb)]/15 hover:bg-[var(--theme-accent,#ff9ebb)]/25 text-[var(--theme-accent,#ff9ebb)] font-serif text-[10px] tracking-wider shadow-[0_0_12px_rgba(255,158,187,0.3)] active:scale-95"
               title="Open Jar of 100 Lucky Stars"
             >
-              <Sparkles className="h-3 w-3 animate-spin-slow" />
+              <Sparkles className="h-2.5 w-2.5 animate-spin-slow" />
               <span>Open Lucky Stars Jar 🌟</span>
             </button>
           </div>
@@ -349,15 +349,15 @@ export const App: React.FC = () => {
       </header>
 
       {/* Main Display Area */}
-      <main className="relative z-20 flex-1 flex items-center justify-center px-2 sm:px-4 overflow-hidden">
+      <main className="relative z-20 flex-1 min-h-0 flex items-center justify-center px-1 sm:px-4">
         {/* Left Arrow Button */}
         <button
           onClick={handlePrev}
-          className="absolute left-1 sm:left-6 z-30 p-2 sm:p-3 rounded-full text-[var(--theme-accent,#ff9ebb)]/60 hover:text-[var(--theme-accent,#ff9ebb)] hover:bg-[var(--theme-accent,#ff9ebb)]/10 transition-all duration-300 active:scale-90"
+          className="absolute left-0.5 sm:left-6 z-30 p-1.5 sm:p-3 rounded-full text-[var(--theme-accent,#ff9ebb)]/60 hover:text-[var(--theme-accent,#ff9ebb)] hover:bg-[var(--theme-accent,#ff9ebb)]/10 transition-all duration-300 active:scale-90"
           title="Previous reason (Left Arrow)"
           aria-label="Previous statement"
         >
-          <ChevronLeft className="h-6 w-6 sm:h-9 sm:w-9 drop-shadow-[0_0_10px_var(--theme-accent-glow,rgba(255,158,187,0.5))]" />
+          <ChevronLeft className="h-5 w-5 sm:h-9 sm:w-9 drop-shadow-[0_0_10px_var(--theme-accent-glow,rgba(255,158,187,0.5))]" />
         </button>
 
         {/* Central Statement Card */}
@@ -373,22 +373,22 @@ export const App: React.FC = () => {
         {/* Right Arrow Button */}
         <button
           onClick={handleNext}
-          className="absolute right-1 sm:right-6 z-30 p-2 sm:p-3 rounded-full text-[var(--theme-accent,#ff9ebb)]/60 hover:text-[var(--theme-accent,#ff9ebb)] hover:bg-[var(--theme-accent,#ff9ebb)]/10 transition-all duration-300 active:scale-90"
+          className="absolute right-0.5 sm:right-6 z-30 p-1.5 sm:p-3 rounded-full text-[var(--theme-accent,#ff9ebb)]/60 hover:text-[var(--theme-accent,#ff9ebb)] hover:bg-[var(--theme-accent,#ff9ebb)]/10 transition-all duration-300 active:scale-90"
           title="Next reason (Right Arrow or Space)"
           aria-label="Next statement"
         >
-          <ChevronRight className="h-6 w-6 sm:h-9 sm:w-9 drop-shadow-[0_0_10px_var(--theme-accent-glow,rgba(255,158,187,0.5))]" />
+          <ChevronRight className="h-5 w-5 sm:h-9 sm:w-9 drop-shadow-[0_0_10px_var(--theme-accent-glow,rgba(255,158,187,0.5))]" />
         </button>
 
         {/* Cute Subtle Mobile Hint */}
-        <div className="sm:hidden absolute bottom-1.5 left-1/2 -translate-x-1/2 pointer-events-none text-[10px] font-serif tracking-widest text-[var(--theme-accent,#ff9ebb)]/65 flex items-center gap-1.5 whitespace-nowrap animate-pulse">
+        <div className="sm:hidden absolute bottom-0.5 left-1/2 -translate-x-1/2 pointer-events-none text-[9px] font-serif tracking-widest text-[var(--theme-accent,#ff9ebb)]/65 flex items-center gap-1 whitespace-nowrap animate-pulse">
           <span>💫</span>
           <span>Swipe to read • Double-tap for hearts 💕</span>
         </div>
       </main>
 
       {/* Bottom Progress Section (Matching Video Design + Mobile Friendly) */}
-      <footer className="relative z-30 w-full px-3 sm:px-8 pb-3 sm:pb-6 pt-2 bg-gradient-to-t from-[#040307] via-[#040307]/80 to-transparent">
+      <footer className="relative z-30 w-full px-3 sm:px-8 pb-2 sm:pb-5 pt-1 sm:pt-2 bg-gradient-to-t from-[#040307] via-[#040307]/80 to-transparent shrink-0">
         {/* Progress Bar Container */}
         <div className="w-full max-w-5xl mx-auto mb-2">
           {/* Subtle Track Line */}
