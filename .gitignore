@@ -1,3 +1,9 @@
+# Dependencies
+node_modules
+dist
+dist-ssr
+*.local
+
 # Logs
 logs
 *.log
@@ -7,12 +13,7 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
-
-# Editor directories and files
+# Editor & OS files
 .vscode/*
 !.vscode/extensions.json
 .idea
@@ -23,7 +24,8 @@ dist-ssr
 *.sln
 *.sw?
 
-# Temporary / Scratch
-*.tmp
+# Video, temporary & local binaries (never commit large mp4 video)
 *.mp4
+*.aac
+*.tmp
 .gemini

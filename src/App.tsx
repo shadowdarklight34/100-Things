@@ -22,7 +22,6 @@ import { PersonalizeModal } from './components/PersonalizeModal';
 import { ShareQuoteModal } from './components/ShareQuoteModal';
 import { LoveLetterModal } from './components/LoveLetterModal';
 import { LuckyStarsJarModal } from './components/LuckyStarsJarModal';
-import { IntroGarden } from './components/IntroGarden';
 import { MagicCursorTrail } from './components/MagicCursorTrail';
 import { CuteReactionsDock } from './components/CuteReactionsDock';
 import { ThemeSwitcher, ThemeType } from './components/ThemeSwitcher';
@@ -60,11 +59,6 @@ export const App: React.FC = () => {
   const [isShareOpen, setIsShareOpen] = useState(false);
   const [isLoveLetterOpen, setIsLoveLetterOpen] = useState(false);
   const [isJarOpen, setIsJarOpen] = useState(false);
-  const [isIntroOpen, setIsIntroOpen] = useState<boolean>(() => {
-    const skip = queryParams.get('skipIntro');
-    if (skip === '1' || skip === 'true') return false;
-    return true;
-  });
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   // Swipe & Touch handling for mobile devices
@@ -247,17 +241,6 @@ export const App: React.FC = () => {
             <button
               onClick={() => {
                 sounds.playPop();
-                setIsIntroOpen(true);
-              }}
-              className="p-1.5 rounded-full border border-[var(--theme-accent,#ff9ebb)]/30 bg-[#0e060d]/80 text-[var(--theme-accent,#ff9ebb)] active:scale-90"
-              title="Flower Garden 🌸"
-              aria-label="Flower Garden"
-            >
-              <span className="text-xs">🌸</span>
-            </button>
-            <button
-              onClick={() => {
-                sounds.playPop();
                 setIsJarOpen(true);
               }}
               className="p-1.5 rounded-full border border-[var(--theme-accent,#ff9ebb)]/30 bg-[#0e060d]/80 text-[var(--theme-accent,#ff9ebb)] active:scale-90"
@@ -301,18 +284,6 @@ export const App: React.FC = () => {
 
         {/* Desktop Right Tools */}
         <div className="hidden sm:flex items-center gap-2">
-          {/* Flower Garden Button */}
-          <button
-            onClick={() => {
-              sounds.playPop();
-              setIsIntroOpen(true);
-            }}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-[var(--theme-accent,#ff9ebb)]/30 bg-[#0e060d]/80 hover:bg-[var(--theme-accent,#ff9ebb)]/15 text-[var(--theme-accent,#ff9ebb)] font-serif text-xs tracking-wider transition-all shadow-md backdrop-blur-md active:scale-95"
-            title="Explore Flower Type Garden 🌸"
-          >
-            <span>🌸 Flower Garden</span>
-          </button>
-
           {/* Lucky Stars Jar Button */}
           <button
             onClick={() => {
@@ -563,13 +534,6 @@ export const App: React.FC = () => {
         }}
         recipientName={recipientName}
         onTriggerStarRain={handleTriggerStarRain}
-      />
-
-      {/* Flower Type Garden Intro */}
-      <IntroGarden
-        isOpen={isIntroOpen}
-        onEnter={() => setIsIntroOpen(false)}
-        recipientName={recipientName}
       />
     </div>
   );

@@ -99,6 +99,27 @@ export const PersonalizeModal: React.FC<PersonalizeModalProps> = ({
               className="w-full bg-[#160a12] border border-[#ff9ebb]/35 focus:border-[#ff9ebb] rounded-2xl px-4 py-3 text-base text-[#f1ede2] placeholder-neutral-500 focus:outline-none transition-all shadow-inner"
               autoFocus
             />
+
+            {/* Quick preset tags */}
+            <div className="flex flex-wrap items-center gap-2 mt-3">
+              {['YOU', 'CRUSH', 'SPECIAL ONE', 'BESTIE', 'SOPHIA', 'ANGEL'].map((preset) => {
+                const isActive = nameInput.trim().toUpperCase() === preset;
+                return (
+                  <button
+                    key={preset}
+                    type="button"
+                    onClick={() => setNameInput(preset)}
+                    className={`px-3 py-1 rounded-full text-xs font-serif tracking-wider border transition-all ${
+                      isActive
+                        ? 'bg-[#ff9ebb]/20 border-[#ff9ebb] text-[#ff9ebb] ring-1 ring-[#ff9ebb]/60 shadow-sm'
+                        : 'border-[#ff9ebb]/20 text-neutral-400 hover:text-[#ff9ebb] hover:border-[#ff9ebb]/50'
+                    }`}
+                  >
+                    {preset}
+                  </button>
+                );
+              })}
+            </div>
           </div>
 
           {/* Action buttons */}
