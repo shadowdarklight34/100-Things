@@ -13,18 +13,31 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = () => {
   const [hasInteracted, setHasInteracted] = useState<boolean>(false);
 
   useEffect(() => {
-    const audio = new Audio('./music.m4a');
-    audio.loop = true;
-    audio.preload = 'auto';
-    audio.volume = 0.65;
-    audioRef.current = audio;
+    let audio: HTMLAudioElement;
+    try {
+      const baseUrl = import.meta.env?.BASE_URL || './';
+      const audioUrl = `${baseUrl.endsWith('/') ? baseUrl : baseUrl + '/'}music.m4a`;
+      audio = new Audio(audioUrl);
+      audio.loop = true;
+      audio.preload = 'auto';
+      audio.volume = 0.65;
+      audioRef.current = audio;
+    } catch {
+      return;
+    }
 
     const handleEnded = () => {
       audio.currentTime = 0;
       audio.play().catch(() => {});
     };
 
+    const handleError = () => {
+      console.warn('Audio could not be loaded or played');
+      setIsPlaying(false);
+    };
+
     audio.addEventListener('ended', handleEnded);
+    audio.addEventListener('error', handleError);
 
     // Attempt autoplay if permitted
     audio
@@ -55,6 +68,7 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = () => {
 
     return () => {
       audio.removeEventListener('ended', handleEnded);
+      audio.removeEventListener('error', handleError);
       window.removeEventListener('click', handleFirstGesture);
       window.removeEventListener('touchstart', handleFirstGesture);
       audio.pause();

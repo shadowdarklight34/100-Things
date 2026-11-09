@@ -24,12 +24,12 @@ export const PersonalizeModal: React.FC<PersonalizeModalProps> = ({
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
     sounds.playSparkle();
-    const cleanName = nameInput.trim() || 'YOU';
+    const cleanName = nameInput.trim() || 'HIGHNESS';
     onSaveName(cleanName);
 
     // Update URL query parameter without reloading
     const url = new URL(window.location.href);
-    if (cleanName.toUpperCase() !== 'YOU') {
+    if (cleanName.toUpperCase() !== 'HIGHNESS') {
       url.searchParams.set('name', cleanName);
     } else {
       url.searchParams.delete('name');
@@ -80,7 +80,7 @@ export const PersonalizeModal: React.FC<PersonalizeModalProps> = ({
           Type her name below. The entire website title and cards will update to
           <span className="text-[#ff9ebb] font-semibold">
             {' '}
-            &ldquo;100 THINGS ABOUT {nameInput.trim() || 'YOU'}&rdquo;
+            &ldquo;100 THINGS ABOUT {nameInput.trim() || 'HIGHNESS'}&rdquo;
           </span>
           .
         </p>
@@ -88,12 +88,12 @@ export const PersonalizeModal: React.FC<PersonalizeModalProps> = ({
         <form onSubmit={handleSave} className="space-y-5">
           <div>
             <label className="block text-[11px] uppercase tracking-widest font-serif text-[#ff9ebb]/80 mb-2">
-              Her Name
+              Her Name / Title
             </label>
             <input
               type="text"
               maxLength={30}
-              placeholder="Enter her name..."
+              placeholder="Enter name (e.g. Highness)..."
               value={nameInput}
               onChange={(e) => setNameInput(e.target.value)}
               className="w-full bg-[#160a12] border border-[#ff9ebb]/35 focus:border-[#ff9ebb] rounded-2xl px-4 py-3 text-base text-[#f1ede2] placeholder-neutral-500 focus:outline-none transition-all shadow-inner"
@@ -103,11 +103,11 @@ export const PersonalizeModal: React.FC<PersonalizeModalProps> = ({
             {/* Quick preset tags */}
             <div className="flex flex-wrap items-center gap-2 mt-3">
               {[
+                { label: 'HIGHNESS', emoji: '👑' },
                 { label: 'YOU', emoji: '🌸' },
                 { label: 'CRUSH', emoji: '💌' },
                 { label: 'SPECIAL ONE', emoji: '✨' },
                 { label: 'BESTIE', emoji: '🧸' },
-                { label: 'SOPHIA', emoji: '🎀' },
                 { label: 'ANGEL', emoji: '👼' },
               ].map((item) => {
                 const isActive = nameInput.trim().toUpperCase() === item.label;

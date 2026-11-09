@@ -31,7 +31,7 @@ import confetti from 'canvas-confetti';
 export const App: React.FC = () => {
   // Read query params from URL - Default theme is Sakura! 🌸
   const queryParams = new URLSearchParams(window.location.search);
-  const initialName = queryParams.get('name') || 'YOU';
+  const initialName = queryParams.get('name') || 'HIGHNESS';
   const initialTheme = (queryParams.get('theme') as ThemeType) || 'sakura';
   const initialQuoteParam = parseInt(queryParams.get('quote') || '1', 10);
   const initialIndex =
@@ -243,11 +243,12 @@ export const App: React.FC = () => {
                 sounds.playPop();
                 setIsJarOpen(true);
               }}
-              className="p-1.5 rounded-full border border-[var(--theme-accent,#ff9ebb)]/30 bg-[#0e060d]/80 text-[var(--theme-accent,#ff9ebb)] active:scale-90"
+              className="flex items-center gap-1 px-2 py-1 rounded-full border border-[var(--theme-accent,#ff9ebb)]/40 bg-[var(--theme-accent,#ff9ebb)]/20 text-[var(--theme-accent,#ff9ebb)] active:scale-90 shadow-sm"
               title="Lucky Stars Jar 🌟"
               aria-label="Lucky Stars Jar"
             >
-              <Sparkles className="h-4 w-4" />
+              <span className="text-xs">⭐</span>
+              <span className="font-serif text-[11px] font-medium tracking-wide">Jar</span>
             </button>
             <button
               onClick={() => setIsAllModalOpen(true)}
@@ -269,7 +270,7 @@ export const App: React.FC = () => {
         </div>
 
         {/* Center Title (Personalizable, Clickable) */}
-        <div className="text-center pointer-events-auto py-1 sm:py-0">
+        <div className="text-center pointer-events-auto py-0.5 sm:py-0">
           <button
             onClick={() => setIsPersonalizeOpen(true)}
             className="group inline-flex items-center justify-center gap-1.5 sm:gap-2 cursor-pointer transition-transform duration-300 active:scale-95 hover:scale-105"
@@ -280,6 +281,21 @@ export const App: React.FC = () => {
               <Edit3 className="h-3 w-3 sm:h-4 sm:w-4 opacity-70 group-hover:opacity-100 transition-opacity text-[var(--theme-accent,#ff9ebb)]" />
             </h1>
           </button>
+
+          {/* Dedicated Mobile Jar Pill right under title */}
+          <div className="flex sm:hidden items-center justify-center gap-2 mt-1">
+            <button
+              onClick={() => {
+                sounds.playPop();
+                setIsJarOpen(true);
+              }}
+              className="flex items-center gap-1.5 px-3 py-0.5 rounded-full border border-[var(--theme-accent,#ff9ebb)]/40 bg-[var(--theme-accent,#ff9ebb)]/15 hover:bg-[var(--theme-accent,#ff9ebb)]/25 text-[var(--theme-accent,#ff9ebb)] font-serif text-[11px] tracking-wider shadow-[0_0_12px_rgba(255,158,187,0.3)] active:scale-95"
+              title="Open Jar of 100 Lucky Stars"
+            >
+              <Sparkles className="h-3 w-3 animate-spin-slow" />
+              <span>Open Lucky Stars Jar 🌟</span>
+            </button>
+          </div>
         </div>
 
         {/* Desktop Right Tools */}
