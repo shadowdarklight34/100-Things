@@ -6,17 +6,27 @@ interface AudioPlayerProps {
   theme?: string;
 }
 
+const formatTime = (seconds: number) => {
+  if (isNaN(seconds) || seconds <= 0) return '0:00';
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${mins}:${secs.toString().padStart(2, '0')}`;
+};
+
 export const AudioPlayer: React.FC<AudioPlayerProps> = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isMuted, setIsMuted] = useState<boolean>(false);
   const [hasInteracted, setHasInteracted] = useState<boolean>(false);
+  const [currentTime, setCurrentTime] = useState<number>(0);
+  const [duration, setDuration] = useState<number>(146.6); // 2m 26s
 
   useEffect(() => {
     let audio: HTMLAudioElement;
     try {
       const baseUrl = import.meta.env?.BASE_URL || './';
-      const audioUrl = `${baseUrl.endsWith('/') ? baseUrl : baseUrl + '/'}music.m4a`;
+      // Use explicit version query parameter to prevent browser caching of old trimmed clips
+      const audioUrl = `${baseUrl.endsWith('/') ? baseUrl : baseUrl + '/'}dilruba_full.m4a?v=full_22s_to_end`;
       audio = new Audio(audioUrl);
       audio.loop = true;
       audio.preload = 'auto';
@@ -36,8 +46,23 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = () => {
       setIsPlaying(false);
     };
 
+    const handleTimeUpdate = () => {
+      setCurrentTime(audio.currentTime);
+      if (audio.duration && !isNaN(audio.duration)) {
+        setDuration(audio.duration);
+      }
+    };
+
+    const handleLoadedMetadata = () => {
+      if (audio.duration && !isNaN(audio.duration)) {
+        setDuration(audio.duration);
+      }
+    };
+
     audio.addEventListener('ended', handleEnded);
     audio.addEventListener('error', handleError);
+    audio.addEventListener('timeupdate', handleTimeUpdate);
+    audio.addEventListener('loadedmetadata', handleLoadedMetadata);
 
     // Attempt autoplay if permitted
     audio
@@ -69,6 +94,8 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = () => {
     return () => {
       audio.removeEventListener('ended', handleEnded);
       audio.removeEventListener('error', handleError);
+      audio.removeEventListener('timeupdate', handleTimeUpdate);
+      audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
       window.removeEventListener('click', handleFirstGesture);
       window.removeEventListener('touchstart', handleFirstGesture);
       audio.pause();
@@ -110,7 +137,7 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = () => {
       <button
         onClick={togglePlay}
         className="flex items-center gap-1.5 sm:gap-2.5 text-xs font-serif tracking-widest text-[var(--theme-accent,#ff9ebb)] hover:brightness-125 transition-all focus:outline-none active:scale-95"
-        title={isPlaying ? 'Pause soundtrack (Dilruba Dilnasheen)' : 'Play soundtrack'}
+        title={isPlaying ? `Pause soundtrack (${formatTime(currentTime)} / ${formatTime(duration)})` : 'Play soundtrack'}
         aria-label="Soundtrack toggle"
       >
         <div className="relative flex items-center justify-center">
@@ -142,9 +169,16 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = () => {
           />
         </div>
 
-        <span className="hidden md:inline text-[11px] uppercase font-serif tracking-widest opacity-90">
-          {isPlaying ? 'Dilruba Dilnasheen 🎵' : 'Music Off'}
-        </span>
+        <div className="flex items-center gap-1.5">
+          <span className="hidden sm:inline text-[11px] uppercase font-serif tracking-widest opacity-90">
+            {isPlaying ? 'Dilruba Dilnasheen 🎵' : 'Music Off'}
+          </span>
+          {isPlaying && (
+            <span className="text-[10px] tracking-wider opacity-60 font-mono">
+              {formatTime(currentTime)}/{formatTime(duration)}
+            </span>
+          )}
+        </div>
       </button>
 
       {/* Mute button */}
