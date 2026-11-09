@@ -129,7 +129,7 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = () => {
         </div>
 
         <span className="hidden md:inline text-[11px] uppercase font-serif tracking-widest opacity-90">
-          {isPlaying ? 'Soundtrack' : 'Music Off'}
+          {isPlaying ? 'Treat You Better 🎵' : 'Music Off'}
         </span>
       </button>
 
